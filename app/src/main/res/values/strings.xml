@@ -3,5 +3,8 @@
 
     <string name="app_name">Sandwich Restaurant</string>
     <string name="action_settings">Settings</string>
+    <string name="sandwich_count_question">How many sandwiches?</string>
+    <string name="sandwich_count_hint">Enter quantity (up to 5)</string>
+    <string name="button_next">Next</string>
 
 </resources>
