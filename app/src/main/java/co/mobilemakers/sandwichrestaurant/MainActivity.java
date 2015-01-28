@@ -1,11 +1,13 @@
 package co.mobilemakers.sandwichrestaurant;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -38,6 +40,15 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    protected class ButtonNextListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(MainActivity.this, SandwichStudioActivity.class);
+            intent.putExtra(SandwichModel.QUANTITY_KEY, Integer.valueOf(mEditSandwichCount.getText().toString()));
+            startActivity(intent);
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +65,7 @@ public class MainActivity extends ActionBarActivity {
 
     private void setListeners() {
         mEditSandwichCount.addTextChangedListener(new SandwichCountListener());
+        mButtonNext.setOnClickListener(new ButtonNextListener());
     }
 
     @Override
