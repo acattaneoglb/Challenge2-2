@@ -22,6 +22,11 @@ public class SandwichModel implements Parcelable {
     }
 
     protected BreadEnum breadType;
+
+    public EnumSet<ToppingEnum> getToppingList() {
+        return toppingList;
+    }
+
     protected EnumSet<ToppingEnum> toppingList = EnumSet.noneOf(ToppingEnum.class);
 
     public static final Creator<SandwichModel> CREATOR = new Creator<SandwichModel>() {

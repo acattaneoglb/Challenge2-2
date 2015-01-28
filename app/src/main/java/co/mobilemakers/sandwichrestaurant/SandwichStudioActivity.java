@@ -83,6 +83,8 @@ public class SandwichStudioActivity extends ActionBarActivity {
     protected class ButtonOrderListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
+            addScreenSandwich();
+
             Intent intent = new Intent(SandwichStudioActivity.this, ResultsActivity.class);
             intent.putParcelableArrayListExtra(SANDWICH_ORDER, sandwichList);
             startActivity(intent);
@@ -97,44 +99,7 @@ public class SandwichStudioActivity extends ActionBarActivity {
     protected class ButtonNextListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            SandwichModel newSandwich = new SandwichModel();
-
-            if (mRadioWheat.isChecked()) {
-                newSandwich.setBreadType(SandwichModel.BreadEnum.WHEAT);
-            }
-            else if (mRadioWhite.isChecked()) {
-                newSandwich.setBreadType(SandwichModel.BreadEnum.WHITE);
-            }
-            else if (mRadioRye.isChecked()) {
-                newSandwich.setBreadType(SandwichModel.BreadEnum.RYE);
-            }
-
-            if (mCheckTomato.isChecked()) {
-                newSandwich.addTopping(SandwichModel.ToppingEnum.TOMATO);
-            }
-            if (mCheckLattuce.isChecked()) {
-                newSandwich.addTopping(SandwichModel.ToppingEnum.LATTUCE);
-            }
-            if (mCheckOnion.isChecked()) {
-                newSandwich.addTopping(SandwichModel.ToppingEnum.ONION);
-            }
-            if (mCheckCarrot.isChecked()) {
-                newSandwich.addTopping(SandwichModel.ToppingEnum.CARROT);
-            }
-            if (mCheckOlives.isChecked()) {
-                newSandwich.addTopping(SandwichModel.ToppingEnum.OLIVES);
-            }
-            if (mCheckSesame.isChecked()) {
-                newSandwich.addTopping(SandwichModel.ToppingEnum.SESAME);
-            }
-            if (mCheckHam.isChecked()) {
-                newSandwich.addTopping(SandwichModel.ToppingEnum.HAM);
-            }
-            if (mCheckCheese.isChecked()) {
-                newSandwich.addTopping(SandwichModel.ToppingEnum.CHEESE);
-            }
-
-            sandwichList.add(newSandwich);
+            addScreenSandwich();
 
             sandwichPos++;
             updateNumber();
@@ -145,6 +110,47 @@ public class SandwichStudioActivity extends ActionBarActivity {
                 changeNextToOrder();
             }
         }
+    }
+
+    private void addScreenSandwich() {
+        SandwichModel newSandwich = new SandwichModel();
+
+        if (mRadioWheat.isChecked()) {
+            newSandwich.setBreadType(SandwichModel.BreadEnum.WHEAT);
+        }
+        else if (mRadioWhite.isChecked()) {
+            newSandwich.setBreadType(SandwichModel.BreadEnum.WHITE);
+        }
+        else if (mRadioRye.isChecked()) {
+            newSandwich.setBreadType(SandwichModel.BreadEnum.RYE);
+        }
+
+        if (mCheckTomato.isChecked()) {
+            newSandwich.addTopping(SandwichModel.ToppingEnum.TOMATO);
+        }
+        if (mCheckLattuce.isChecked()) {
+            newSandwich.addTopping(SandwichModel.ToppingEnum.LATTUCE);
+        }
+        if (mCheckOnion.isChecked()) {
+            newSandwich.addTopping(SandwichModel.ToppingEnum.ONION);
+        }
+        if (mCheckCarrot.isChecked()) {
+            newSandwich.addTopping(SandwichModel.ToppingEnum.CARROT);
+        }
+        if (mCheckOlives.isChecked()) {
+            newSandwich.addTopping(SandwichModel.ToppingEnum.OLIVES);
+        }
+        if (mCheckSesame.isChecked()) {
+            newSandwich.addTopping(SandwichModel.ToppingEnum.SESAME);
+        }
+        if (mCheckHam.isChecked()) {
+            newSandwich.addTopping(SandwichModel.ToppingEnum.HAM);
+        }
+        if (mCheckCheese.isChecked()) {
+            newSandwich.addTopping(SandwichModel.ToppingEnum.CHEESE);
+        }
+
+        sandwichList.add(newSandwich);
     }
 
     private void setListeners() {

@@ -8,11 +8,11 @@
     <string name="button_next">Next</string>
     <string name="title_activity_sandwich_studio">Build the sandwich</string>
     <string name="sandwich_number">"Sandwich %1$d of %2$d"</string>
-    <string name="bread_options">Bread</string>
+    <string name="bread_options">Bread:</string>
     <string name="wheat_option">Wheat</string>
     <string name="white_option">White</string>
     <string name="rye_option">Rye</string>
-    <string name="toppings_options">Toppings</string>
+    <string name="toppings_options">Toppings:</string>
     <string name="tomato_option">Tomato</string>
     <string name="lattuce_option">Lattuce</string>
     <string name="onion_option">Onion</string>
@@ -21,8 +21,11 @@
     <string name="sesame_seeds_option">Sesame seeds</string>
     <string name="ham_option">Ham</string>
     <string name="cheese_option">Cheese</string>
+    <string name="nothing">nothing</string>
     <string name="place_order">Place my order</string>
     <string name="title_activity_results">Order result</string>
     <string name="hello_world">Hello world!</string>
+    <string name="text_sandwich_total">%1$d sandwiches:</string>
+    <string name="sandwich_each">Sandwich %1$d:</string>
 
 </resources>
