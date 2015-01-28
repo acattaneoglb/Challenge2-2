@@ -73,4 +73,8 @@ public class SandwichModel implements Parcelable {
         toppingList.add(toppingType);
     }
 
+    public void removeTopping(ToppingEnum toppingType) {
+        toppingList.remove(toppingType);
+    }
+
 }

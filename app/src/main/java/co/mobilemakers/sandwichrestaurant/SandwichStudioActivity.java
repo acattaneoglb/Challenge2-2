@@ -8,18 +8,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 
 
 public class SandwichStudioActivity extends ActionBarActivity {
+
+    final static private String KEY_WHICH = "KEY_WHICH";
+    final static private String KEY_THIS_ONE = "KEY_THIS_ONE";
+    final static private String KEY_ENTIRE_LIST = "KEY_ENTIRE_LIST";
 
     final static public String SANDWICH_ORDER = "SANDWICH_ORDER";
 
     int sandwichPos;
     int lastSandwich;
+    SandwichModel thisSandwich;
 
     ArrayList<SandwichModel> sandwichList = new ArrayList<>();
 
@@ -61,7 +68,43 @@ public class SandwichStudioActivity extends ActionBarActivity {
     protected class RadioBreadListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
+            if (v == mRadioWheat)
+                thisSandwich.setBreadType(SandwichModel.BreadEnum.WHEAT);
+            else if (v == mRadioWhite)
+                thisSandwich.setBreadType(SandwichModel.BreadEnum.WHITE);
+            else
+                thisSandwich.setBreadType(SandwichModel.BreadEnum.RYE);
+
             enableNextIfBread();
+        }
+    }
+
+    protected class CheckToppingListener implements CompoundButton.OnCheckedChangeListener {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            SandwichModel.ToppingEnum toppingToChange;
+
+            if (buttonView == mCheckTomato)
+                toppingToChange = SandwichModel.ToppingEnum.TOMATO;
+            else if (buttonView == mCheckLattuce)
+                toppingToChange = SandwichModel.ToppingEnum.LATTUCE;
+            else if (buttonView == mCheckOnion)
+                toppingToChange = SandwichModel.ToppingEnum.ONION;
+            else if (buttonView == mCheckCarrot)
+                toppingToChange = SandwichModel.ToppingEnum.CARROT;
+            else if (buttonView == mCheckOlives)
+                toppingToChange = SandwichModel.ToppingEnum.OLIVES;
+            else if (buttonView == mCheckSesame)
+                toppingToChange = SandwichModel.ToppingEnum.SESAME;
+            else if (buttonView == mCheckHam)
+                toppingToChange = SandwichModel.ToppingEnum.HAM;
+            else //if (buttonView == mCheckCheese)
+                toppingToChange = SandwichModel.ToppingEnum.CHEESE;
+
+            if (isChecked)
+                thisSandwich.addTopping(toppingToChange);
+            else
+                thisSandwich.removeTopping(toppingToChange);
         }
     }
 
@@ -78,6 +121,8 @@ public class SandwichStudioActivity extends ActionBarActivity {
         mCheckSesame.setChecked(false);
         mCheckHam.setChecked(false);
         mCheckCheese.setChecked(false);
+
+        thisSandwich = new SandwichModel();
     }
 
     protected class ButtonOrderListener implements View.OnClickListener {
@@ -160,6 +205,17 @@ public class SandwichStudioActivity extends ActionBarActivity {
         mRadioWhite.setOnClickListener(radioListener);
         mRadioRye.setOnClickListener(radioListener);
 
+        CheckToppingListener checkToppingListener = new CheckToppingListener();
+
+        mCheckTomato.setOnCheckedChangeListener(checkToppingListener);
+        mCheckLattuce.setOnCheckedChangeListener(checkToppingListener);
+        mCheckOnion.setOnCheckedChangeListener(checkToppingListener);
+        mCheckCarrot.setOnCheckedChangeListener(checkToppingListener);
+        mCheckOlives.setOnCheckedChangeListener(checkToppingListener);
+        mCheckSesame.setOnCheckedChangeListener(checkToppingListener);
+        mCheckHam.setOnCheckedChangeListener(checkToppingListener);
+        mCheckCheese.setOnCheckedChangeListener(checkToppingListener);
+
         if (sandwichPos < lastSandwich) {
             mButtonNext.setOnClickListener(new ButtonNextListener());
         }
@@ -183,6 +239,9 @@ public class SandwichStudioActivity extends ActionBarActivity {
         setListeners();
 
         updateNumber();
+
+        thisSandwich = new SandwichModel();
+
     }
 
 
@@ -206,5 +265,62 @@ public class SandwichStudioActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt(KEY_WHICH, sandwichPos);
+        outState.putParcelable(KEY_THIS_ONE, thisSandwich);
+        outState.putParcelableArrayList(KEY_ENTIRE_LIST, sandwichList);
+    }
+
+    protected void restoreSandwich() {
+        updateNumber();
+
+        if (thisSandwich.getBreadType() != null) {
+            if (thisSandwich.getBreadType() == SandwichModel.BreadEnum.WHEAT)
+                mRadioWheat.setChecked(true);
+            else if (thisSandwich.getBreadType() == SandwichModel.BreadEnum.WHITE)
+                mRadioWhite.setChecked(true);
+            else if (thisSandwich.getBreadType() == SandwichModel.BreadEnum.RYE)
+                mRadioRye.setChecked(true);
+        }
+
+        EnumSet<SandwichModel.ToppingEnum> toppingList = thisSandwich.getToppingList();
+        if (toppingList.contains(SandwichModel.ToppingEnum.TOMATO))
+            mCheckTomato.setChecked(true);
+        if (toppingList.contains(SandwichModel.ToppingEnum.LATTUCE))
+            mCheckLattuce.setChecked(true);
+        if (toppingList.contains(SandwichModel.ToppingEnum.ONION))
+            mCheckOnion.setChecked(true);
+        if (toppingList.contains(SandwichModel.ToppingEnum.CARROT))
+            mCheckCarrot.setChecked(true);
+        if (toppingList.contains(SandwichModel.ToppingEnum.OLIVES))
+            mCheckOlives.setChecked(true);
+        if (toppingList.contains(SandwichModel.ToppingEnum.SESAME))
+            mCheckSesame.setChecked(true);
+        if (toppingList.contains(SandwichModel.ToppingEnum.HAM))
+            mCheckHam.setChecked(true);
+        if (toppingList.contains(SandwichModel.ToppingEnum.CHEESE))
+            mCheckCheese.setChecked(true);
+
+        enableNextIfBread();
+
+        if (sandwichPos == lastSandwich) {
+            changeNextToOrder();
+        }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        sandwichPos = savedInstanceState.getInt(KEY_WHICH);
+        thisSandwich = savedInstanceState.getParcelable(KEY_THIS_ONE);
+        sandwichList = savedInstanceState.getParcelableArrayList(KEY_ENTIRE_LIST);
+
+        restoreSandwich();
     }
 }
